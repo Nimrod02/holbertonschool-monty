@@ -2,10 +2,14 @@
 #define  __MONTY__
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include <string.h>
 #include <fcntl.h>
+#include<stdbool.h>
+#include <sys/queue.h>  
+
+#define DELIM "\n\t\b ;,"
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
@@ -37,8 +41,8 @@ typedef struct instruction_s
         void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-void opcode_funct(char *opcode, stack_t **stack, unsigned int line_number);
-void push(stack_t **stack, unsigned int line_number);
+void (*opcodeFunc(char *opcode))(stack_t **stack, unsigned int line_number);
+int push(stack_t **stack, unsigned int line_number);
 void pall(stack_t **stack, unsigned int line_number);
 void pint(stack_t **stack, unsigned int line_number);
 
