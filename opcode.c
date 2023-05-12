@@ -1,10 +1,10 @@
 #include "monty.h"
 
 /**
- *opcode_funct - find the good function 
+ *opcode_funct - find the good function
  *@opcode: pointer to opcode that is to be matched
- *@stack: pointer to pointer 
- *@line_number: line number to read 
+ *@stack: pointer to pointer
+ *@line_number: line number to read
  */
 
 void opcode_funct(char *opcode, stack_t **stack, unsigned int line_number)
@@ -27,5 +27,4 @@ void opcode_funct(char *opcode, stack_t **stack, unsigned int line_number)
 		}
 		i++;
 	}
-	return (NULL);
 }
