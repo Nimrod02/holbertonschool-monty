@@ -9,7 +9,7 @@
 #include<stdbool.h>
 #include <sys/queue.h>
 
-#define DELIM "\n\t\b ;,"
+#define DELIM "\n\t\b\a\r ;,:"
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
@@ -41,11 +41,13 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-void (*opcodeFunc(char *opcode))(stack_t **stack, unsigned int line_number);
-void push(stack_t **stack, unsigned int line_number);
+void (*opcodeFunc(char *opCode))(stack_t **stack, unsigned int line_number);
+void push(stack_t **stack, unsigned int line_number,  char *token);
 void pall(stack_t **stack, unsigned int line_number);
 void pint(stack_t **stack, unsigned int line_number);
 void pop(stack_t **stack, unsigned int line_number);
+void freeList(stack_t **h);
+
 
 
 

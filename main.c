@@ -13,36 +13,36 @@ int main(int argc, char *argv[])
 {
 
 	stack_t *h = NULL;
-	int fileOpen, fileContent, lineCounter, index = 0;
+	int fileOpen, fileContent, lineCounter;
 	bool isPush = false;
 	char *buffer, *token;
 
 	if (argc != 2)
 	{
-		printf("USAGE: monty file\n");
+		fprintf(stderr, "USAGE: monty file\n");
 		exit(EXIT_FAILURE);
 	}
 
-		fileOpen = open(argv[1], O_RDONLY);
+	fileOpen = open(argv[1], O_RDONLY);
 
-		if (fileOpen == -1)
-		{
-			printf("Error: Can't open file %s\n", argv[1]);
-			exit(EXIT_FAILURE);
-		}
+	if (fileOpen == -1)
+	{
+		printf("Error: Can't open file %s\n", argv[1]);
+		exit(EXIT_FAILURE);
+	}
 
-		buffer = malloc(sizeof(char) * 1024);
-		if (buffer == NULL)
-		{
+	buffer = malloc(sizeof(char) * 17000);
+	if (buffer == NULL)
+	{
 
-			printf("Error: malloc failed");
-			free(buffer);
-			exit(EXIT_FAILURE);
-		}
+		printf("Error: malloc failed");
+		free(buffer);
+		exit(EXIT_FAILURE);
+	}
 
-	fileContent = read (fileOpen, buffer, 1024);
+	fileContent = read (fileOpen, buffer, 17000);
 
-	if (fileContent = -1)
+	if (fileContent == -1)
 	{
 		free (buffer);
 		close (fileOpen);
@@ -51,33 +51,31 @@ int main(int argc, char *argv[])
 	
 	token = strtok(buffer, DELIM);
 
-	buffer = strtok(NULL, DELIM);
-
-		while (token != NULL)
+	lineCounter = 1;
+	while (token != NULL)
+	{
+		if (isPush == true)
 		{
-			if (isPush == true)
-		{
+			push(&h, lineCounter, token);
 			isPush = false;
 			token = strtok(NULL, DELIM);
-			push (&h, lineCounter, token);
 			lineCounter++;
 			continue;
 		}
-	else if (strcmp(token, "push") == 0)
-			{
+		else if (strcmp(token, "push") == 0)
+		{
 			isPush = true;
 			token = strtok(NULL, DELIM);
 			continue;
-			}
-
-	else
+		}
+		else
 		{
-			if (opcodeFunc(token) != 0)
+			if (opcodeFunc(token) != NULL)
 				opcodeFunc(token)(&h, lineCounter);
 			else
 			{
-				freelist (&h);
-				printf("%d : usage: push integer", lineCounter, token);
+				freeList (&h);
+				fprintf(stderr, "L%d: unknown instruction %s\n", lineCounter, token);
 				exit (EXIT_FAILURE);
 			}
 		}

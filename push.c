@@ -1,36 +1,49 @@
 #include "monty.h"
 
 /**
- * push - function that add an element to a stack
- *@stack: double pointer to the head  of the stack
- *@line_number: Line number of the opcode in the Monty file
-*/
+ *push - pushes a new node onto the top of the stack
+ *
+ *@stack: pointer to pointer to top of the stack
+ *
+ *@line_number: line number of read line
+ */
 
-void push(stack_t **stack, unsigned int line_number)
-
-
+void push(stack_t **stack, unsigned int line_number, char *token)
 {
-	stack_t *new_node;
-	
-	new_node = malloc(sizeof(stack_t));
-	if (new_node == NULL)
+	int digit;
+	stack_t *newNode;
+
+	if (stack == NULL)
 	{
-		fprintf(stderr, "Erreur lors de l'allocation de mémoire\n");
+		fprintf(stderr, "L%u: usage: push integer1\n", line_number);
 		exit(EXIT_FAILURE);
 	}
-	if (line_number != 0)
+
+	if (token == NULL)
+	{
+		fprintf(stderr, "L%u: usage: push integer2\n", line_number);
+		exit(EXIT_FAILURE);
+	}
 	
-	new_node->n = line_number;
-	new_node->next = *stack;
-	new_node->prev = NULL;
+	digit = atoi(token);
 	
+	if (strspn(token, "0123456789+-") != strlen(token))
+	{
+		fprintf(stderr, "L%u: usage: push integer3\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+	newNode = malloc(sizeof(stack_t));
+	if (newNode == NULL)
+	{
+		fprintf(stderr, "Error: malloc failed\n");
+		exit(EXIT_FAILURE);
+	}
+	newNode->n = digit;
+	newNode->prev = NULL;
+	newNode->next = *stack;
 	if (*stack != NULL)
-	(*stack)->prev = new_node;
-	
-	*stack = new_node;
+	{
+		(*stack)->prev = newNode;
+	}
+	*stack = newNode;
 }
-
-
-
-
-
