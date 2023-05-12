@@ -1,30 +1,28 @@
 #include "monty.h"
 
 /**
- *opcode_funct - find the good function
- *@opcode: pointer to opcode that is to be matched
- *@stack: pointer to pointer
- *@line_number: line number to read
- */
+ * findOpCode - matches the opcode to the appropriate function
+ * @opcode: pointer to opcode that is to be matched
+ * @stack: pointer to pointer to top of the stack
+ * @line_number: line number of read line
 
-void opcode_funct(char *opcode, stack_t **stack, unsigned int line_number)
+ */
+void (*opcodeFunc(char *opCode))(stack_t **stack, unsigned int line_number)
 {
-	int i = 0;
+	int index = 0;
 	instruction_t instructions[] = {
-		{"push", push},
-		{"pall", pall},
 		{"pint", pint},
 		{"pop", pop},
+		{"pall", pall},
 		{NULL, NULL}
 	};
 
-	while (instructions[i].opcode != NULL)
+	while (instructions[index].opcode != NULL)
 	{
-		if (strcmp(opcode, instructions[i].opcode) == 0)
-		{
-			instructions[i].f(stack, line_number);
-			return;
-		}
-		i++;
+		if (strcmp(opCode, instructions[index].opcode) == 0)
+			return (instructions[index].f);
+
+		index++;
 	}
+	return (NULL);
 }
