@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 
 	if (fileOpen == -1)
 	{
-		printf("Error: Can't open file %s\n", argv[1]);
+		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
 		exit(EXIT_FAILURE);
 	}
 
@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 	if (buffer == NULL)
 	{
 
-		printf("Error: malloc failed");
+		fprintf(stderr, "Error: malloc failed");
 		free(buffer);
 		exit(EXIT_FAILURE);
 	}
