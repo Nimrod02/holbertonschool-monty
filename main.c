@@ -12,7 +12,7 @@
 int main(int argc, char *argv[])
 {
 
-	stack_t n;
+	stack_t *h = NULL;
 	int fileOpen, fileContent, lineCounter, index = 0;
 	bool isPush = false;
 	char *buffer, *token;
@@ -40,20 +40,28 @@ int main(int argc, char *argv[])
 			exit(EXIT_FAILURE);
 		}
 
-		fileContent = read(fileOpen, buffer, 1024);
+	fileContent = read (fileOpen, buffer, 1024);
 
-		token = strtok(buffer, DELIM);
-		buffer = strtok(NULL, DELIM);
+	if (fileContent = -1)
+	{
+		free (buffer);
+		close (fileOpen);
+		exit (EXIT_FAILURE);
+	}
+	
+	token = strtok(buffer, DELIM);
+
+	buffer = strtok(NULL, DELIM);
 
 		while (token != NULL)
 		{
 			if (isPush == true)
 		{
-		isPush = false;
-		token = strtok(NULL, DELIM);
-		push(&n, lineCounter, token);
-				lineCounter++;
-				continue;
+			isPush = false;
+			token = strtok(NULL, DELIM);
+			push (&h, lineCounter, token);
+			lineCounter++;
+			continue;
 		}
 	else if (strcmp(token, "push") == 0)
 			{
@@ -64,20 +72,21 @@ int main(int argc, char *argv[])
 
 	else
 		{
-		if (opcodeFunc(token) != 0)
-		opcodeFunc(&n, token, lineCounter);
-		else
+			if (opcodeFunc(token) != 0)
+				opcodeFunc(token)(&h, lineCounter);
+			else
 			{
-			freelist(&n);
-			printf("%d : usage: push integer", lineCounter);
-			exit(EXIT_FAILURE);
+				freelist (&h);
+				printf("%d : usage: push integer", lineCounter, token);
+				exit (EXIT_FAILURE);
 			}
 		}
 		lineCounter++;
 		token = strtok(NULL, DELIM);
 	}
-	freeList(&n);
-	free(buffer);
+
+	freeList (&h);
+	free (buffer);
 	close(fileOpen);
 
 	return (EXIT_SUCCESS);
