@@ -9,7 +9,7 @@
 int main(int argc, char *argv[])
 {
 
-	stack_t n;
+	stack_t *h = NULL;
 	int fileOpen, fileContent, lineCounter, index = 0;
 	bool isPush = false;
 	char *buffer, *token;
@@ -38,6 +38,13 @@ int main(int argc, char *argv[])
 	}
 
 	fileContent = read (fileOpen, buffer, 1024);
+
+	if (fileContent = -1)
+	{
+		free (buffer);
+		close (fileOpen);
+		exit (EXIT_FAILURE);
+	}
 	
 	token = strtok(buffer, DELIM);
 
@@ -49,7 +56,7 @@ int main(int argc, char *argv[])
 		{
 			isPush = false;
 			token = strtok(NULL, DELIM);
-			push (&n, lineCounter, token);
+			push (&h, lineCounter, token);
 			lineCounter++;
 			continue;
 		}
@@ -64,11 +71,11 @@ int main(int argc, char *argv[])
 		else 
 		{
 			if (opcodeFunc(token) != 0)
-				opcodeFunc(&n, token, lineCounter);
+				opcodeFunc(token)(&h, lineCounter);
 			else
 			{
-				freelist (&n);
-				printf("%d : usage: push integer", lineCounter);
+				freelist (&h);
+				printf("%d : usage: push integer", lineCounter, token);
 				exit (EXIT_FAILURE);
 			}
 		}
@@ -76,7 +83,7 @@ int main(int argc, char *argv[])
 		token = strtok(NULL, DELIM);
 	}
 
-	freeList (&n);
+	freeList (&h);
 	free (buffer);
 	close(fileOpen);
 
