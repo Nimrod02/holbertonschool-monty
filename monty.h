@@ -50,6 +50,7 @@ void freeList(stack_t **h);
 void nop(stack_t **stack, unsigned int line_number);
 void add(stack_t **stack, unsigned int lineNumber);
 void swap(stack_t **stack, unsigned int lineNumber);
+void TOKEN(stack_t **h);
 
 
 
