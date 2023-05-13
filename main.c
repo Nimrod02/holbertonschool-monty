@@ -68,7 +68,7 @@ int main(int ac, char **av)
 				opcodeFunc(token)(&h, line);/*Exécuter la commande correspondante*/
 			else
 			{
-				_freeList(&h);
+				freeList(&h);
 				fprintf(stderr, "L%d: unknown instruction %s\n", line, token);
 				exit(EXIT_FAILURE);
 			}
