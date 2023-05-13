@@ -49,7 +49,39 @@ int main(int argc, char *argv[])
 		exit (EXIT_FAILURE);
 	}
 	
-	(void) parseBuffer;
+	token = strtok(buffer, DELIM);
+
+	lineCounter = 1;
+	while (token != NULL)
+	{
+		if (isPush == 1)
+		{
+			push(&h, lineCounter, token);
+			isPush = false;
+			token = strtok(NULL, DELIM);
+			lineCounter++;
+			continue;
+		}
+		else if (strcmp(token, "push") == 0)
+		{
+			isPush = true;
+			token = strtok(NULL, DELIM);
+			continue;
+		}
+		else
+		{
+			if (opcodeFunc(token) != NULL)
+				opcodeFunc(token)(&h, lineCounter);
+			else
+			{
+				freeList (&h);
+				fprintf(stderr, "L%d: unknown instruction %s\n", lineCounter, token);
+				exit (EXIT_FAILURE);
+			}
+		}
+		lineCounter++;
+		token = strtok(NULL, DELIM);
+	}
 
 	freeList (&h);
 	free (buffer);
