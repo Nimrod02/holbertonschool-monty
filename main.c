@@ -1,85 +1,60 @@
 #include "monty.h"
 
 /**
- * main - Open, read, and close file.m.
- * @ac: nombre d'arguments
- * @av: pointer de pointers
- * Return: Always 0.
- */
+ *main - function use all function
+ *@argc: counter of argument
+ *@argv: value of argument
+ *freeList - function free the stack 
+ *return: return succes or fail
+ *@h: pointer to pointer of struct stack_t
+*/
 
-int main(int ac, char **av)
+int main(int argc, char *argv[])
 {
-	int line = 1;
-	ssize_t openFile, readFile;
-	char *buffer, *token;
-	int isPush = 0;
+
 	stack_t *h = NULL;
+	int fileOpen, fileContent, lineCounter;
+	bool isPush = false;
+	char *buffer, *token;
 
-	if (ac != 2)
+	if (argc != 2)
 	{
-		fprintf(stderr, "Usage: monty file\n");
+		fprintf(stderr, "USAGE: monty file\n");
 		exit(EXIT_FAILURE);
 	}
 
-	openFile = open(av[1], O_RDONLY);
-	if (openFile == -1)
+	fileOpen = open(argv[1], O_RDONLY);
+
+	if (fileOpen == -1)
 	{
-		fprintf(stderr,"Error: can't open file %s", av[1]);
+		fprintf(stderr, "Error: can't open file %s", argv[1]);
 		exit(EXIT_FAILURE);
 	}
 
-	buffer = malloc(sizeof(char) * 10000);
-	if (!buffer)
-		return (0);
-
-	readFile = read(openFile, buffer, 10000);
-	if (readFile == -1)
+	buffer = malloc(sizeof(char) * 17000);
+	if (buffer == NULL)
 	{
+
+		fprintf(stderr, "Error: malloc failed");
 		free(buffer);
-		close(openFile);
 		exit(EXIT_FAILURE);
+	}
+
+	fileContent = read (fileOpen, buffer, 10000);
+
+	if (fileContent == -1)
+	{
+		free (buffer);
+		close (fileOpen);
+		exit (EXIT_FAILURE);
 	}
 	
-	/*Obtenir le premier token*/
-	token = strtok(buffer, DELIM);
+	(void) parseBuffer;
 
-	while (token != NULL)
-	{
-		if (isPush == 1)
-		{
-			/*Si la commande "push" a été détectée*/
-			push(&h, line, token);/*Ajouter le token à la pile*/
-			isPush = 0;/*Réinitialiser le drapeau "push"*/
-			token = strtok(NULL, DELIM);/*Obtenir le token suivant*/
-			line++;
-			continue;
-		}
-		else if (strcmp(token, "push") == 0)
-		{
-			/*Si la commande "push" est détectée*/
-			isPush = 1;/*Activer le drapeau "push"*/
-			token = strtok(NULL, DELIM);/*Obtenir le token suivant*/
-			continue;
-		}
-		else
-		{
-			/*Si la commande n'est pas "push"*/
-			if (opcodeFunc(token) != 0)
-				opcodeFunc(token)(&h, line);/*Exécuter la commande correspondante*/
-			else
-			{
-				freeList(&h);
-				fprintf(stderr, "L%d: unknown instruction %s\n", line, token);
-				exit(EXIT_FAILURE);
-			}
-		}
+	freeList (&h);
+	free (buffer);
+	close(fileOpen);
 
-		line++;
-		token = strtok(NULL, DELIM);/*Obtenir le token suivant*/
-	}
-
-	freeList(&h);
-	free(buffer);
-	close(openFile);
-	return (0);
+	return (EXIT_SUCCESS);
 }
+
