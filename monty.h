@@ -47,6 +47,7 @@ void pall(stack_t **stack, unsigned int line_number);
 void pint(stack_t **stack, unsigned int line_number);
 void pop(stack_t **stack, unsigned int line_number);
 void freeList(stack_t **h);
+void nop(stack_t **stack, unsigned int line_number);
 
 
 

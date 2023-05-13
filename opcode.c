@@ -14,6 +14,7 @@ void (*opcodeFunc(char *opCode))(stack_t **stack, unsigned int line_number)
 		{"pint", pint},
 		{"pop", pop},
 		{"pall", pall},
+		{"nop", nop},
 		{NULL, NULL}
 	};
 
