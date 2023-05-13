@@ -24,6 +24,6 @@ void add(stack_t **stack, unsigned int line_number)
 	b = (*stack)->next->n;/* Stocker la valeur du deuxième élément dans 'b'*/
 	result = a + b;
 	/*stockage dans le 2eme elm top*/
-	_pop(stack, line_number);
+	pop(stack, line_number);
 	(*stack)->n = result;/*stocker la sum ds le 1er elm de la P*/
 }
