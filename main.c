@@ -48,7 +48,7 @@ int main(int ac, char **av)
 		if (isPush == 1)
 		{
 			/*Si la commande "push" a été détectée*/
-			_push(&h, line, token);/*Ajouter le token à la pile*/
+			push(&h, line, token);/*Ajouter le token à la pile*/
 			isPush = 0;/*Réinitialiser le drapeau "push"*/
 			token = strtok(NULL, DELIM);/*Obtenir le token suivant*/
 			line++;
@@ -78,7 +78,7 @@ int main(int ac, char **av)
 		token = strtok(NULL, DELIM);/*Obtenir le token suivant*/
 	}
 
-	_freeList(&h);
+	freeList(&h);
 	free(buffer);
 	close(openFile);
 	return (0);
