@@ -1,111 +1,85 @@
 #include "monty.h"
 
 /**
- *main - function use all function
- *@argc: counter of argument
- *@argv: value of argument
- *freeList - function free the stack 
- *return: return succes or fail
- *@h: pointer to pointer of struct stack_t
-*/
+ * main - Open, read, and close file.m.
+ * @ac: nombre d'arguments
+ * @av: pointer de pointers
+ * Return: Always 0.
+ */
 
-int main(int argc, char *argv[])
+int main(int ac, char **av)
 {
-
-	stack_t *h = NULL;
-	int fileOpen, fileContent, lineCounter;
-	bool isPush = false;
+	int line = 1;
+	ssize_t openFile, readFile;
 	char *buffer, *token;
+	int isPush = 0;
+	stack_t *h = NULL;
 
-	if (argc != 2)
+	if (ac != 2)
 	{
-		fprintf(stderr, "USAGE: monty file\n");
+		fprintf(stderr, "Usage: monty file\n");
 		exit(EXIT_FAILURE);
 	}
 
-	fileOpen = open(argv[1], O_RDONLY);
-
-	if (fileOpen == -1)
+	openFile = open(av[1], O_RDONLY);
+	if (openFile == -1)
 	{
-		fprintf(stderr, "Error: can't open file %s", argv[1]);
+		fprintf(stderr,"Error: can't open file %s", av[1]);
 		exit(EXIT_FAILURE);
 	}
 
-	buffer = malloc(sizeof(char) * 17000);
-	if (buffer == NULL)
-	{
+	buffer = malloc(sizeof(char) * 10000);
+	if (!buffer)
+		return (0);
 
-		fprintf(stderr, "Error: malloc failed");
+	readFile = read(openFile, buffer, 10000);
+	if (readFile == -1)
+	{
 		free(buffer);
+		close(openFile);
 		exit(EXIT_FAILURE);
-	}
-
-	fileContent = read (fileOpen, buffer, 10000);
-
-	if (fileContent == -1)
-	{
-		free (buffer);
-		close (fileOpen);
-		exit (EXIT_FAILURE);
 	}
 	
+	/*Obtenir le premier token*/
 	token = strtok(buffer, DELIM);
 
-	lineCounter = 1;
 	while (token != NULL)
 	{
 		if (isPush == 1)
 		{
-			push(&h, lineCounter, token);
-			isPush = false;
-			token = strtok(NULL, DELIM);
-			lineCounter++;
+			/*Si la commande "push" a été détectée*/
+			_push(&h, line, token);/*Ajouter le token à la pile*/
+			isPush = 0;/*Réinitialiser le drapeau "push"*/
+			token = strtok(NULL, DELIM);/*Obtenir le token suivant*/
+			line++;
 			continue;
 		}
 		else if (strcmp(token, "push") == 0)
 		{
-			isPush = true;
-			token = strtok(NULL, DELIM);
+			/*Si la commande "push" est détectée*/
+			isPush = 1;/*Activer le drapeau "push"*/
+			token = strtok(NULL, DELIM);/*Obtenir le token suivant*/
 			continue;
 		}
 		else
 		{
-			if (opcodeFunc(token) != NULL)
-				opcodeFunc(token)(&h, lineCounter);
+			/*Si la commande n'est pas "push"*/
+			if (opcodeFunc(token) != 0)
+				opcodeFunc(token)(&h, line);/*Exécuter la commande correspondante*/
 			else
 			{
-				freeList (&h);
-				fprintf(stderr, "L%d: unknown instruction %s\n", lineCounter, token);
-				exit (EXIT_FAILURE);
+				_freeList(&h);
+				fprintf(stderr, "L%d: unknown instruction %s\n", line, token);
+				exit(EXIT_FAILURE);
 			}
 		}
-		lineCounter++;
-		token = strtok(NULL, DELIM);
+
+		line++;
+		token = strtok(NULL, DELIM);/*Obtenir le token suivant*/
 	}
 
-	freeList (&h);
-	free (buffer);
-	close(fileOpen);
-
-	return (EXIT_SUCCESS);
-}
-
-
-/**
- * free_dlistint - main function that free the list
- * @head: head pointer, start of the list
- *
-*/
-
-void freeList(stack_t **h)
-{
-	if (!h)
-		return;
-
-	while (*h && (*h)->next)
-	{
-		*h = (*h)->next;
-		free((*h)->prev);
-	}
-	free(*h);
+	_freeList(&h);
+	free(buffer);
+	close(openFile);
+	return (0);
 }
