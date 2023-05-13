@@ -1,25 +1,29 @@
 #include "monty.h"
 
 /**
- * add - add top two nodes of the stack
- * @stack: top of the list
- * @lineNumber: line number
-*/
+ * _add - Ajout des 2 premiers elements de la pile
+ *
+ * @stack: Double pointeur sur la tête de la pile
+ * @line_number: Numéro de la ligne en cours d'exécution
+ *
+ */
 
-void add(stack_t **stack, unsigned int lineNumber)
+void _add(stack_t **stack, unsigned int line_number)
 {
-        if (*stack == NULL || (*stack)->next == NULL)
-        {
-                fprintf(stderr, "L%u: can't add, stack too short\n", lineNumber);
-                exit(EXIT_FAILURE);
-        }
+	int a, b, result;
 
-        (*stack)->next->n += (*stack)->n;
+	/* Vérifier si la P contient 2 éléments */
+	if (*stack == NULL || (*stack)->next == NULL)
+	{
+		fprintf(stderr, "L%d: can't add, stack too short\n", line_number);
+		exit(EXIT_FAILURE);
+	}
 
-        (*stack) = (*stack)->next;
-
-        free((*stack)->prev);
-
-        (*stack)->prev = NULL;
+	/* Obtenir les valeurs des 2 1er éléments*/
+	a = (*stack)->n;/*Stocker la valeur du premier élément dans 'a*/
+	b = (*stack)->next->n;/* Stocker la valeur du deuxième élément dans 'b'*/
+	result = a + b;
+	/*stockage dans le 2eme elm top*/
+	_pop(stack, line_number);
+	(*stack)->n = result;/*stocker la sum ds le 1er elm de la P*/
 }
-
