@@ -92,9 +92,4 @@ The `push` opcodes add the numbers `1`, `2`, and `3` to the stack. The `pall` op
 
 - [@Gremont Matheo](https://github.com/grem62)
 
-![](https://ca.slack-edge.com/T0423U1MW21-U04NC00H4JU-adedd0d861f8-192)
-
 - [@Letrun Arthur](https://github.com/Nimrod02)
-
-
-![](https://ca.slack-edge.com/T0423U1MW21-U04P9RAN0EL-8d86f1c0c5db-512)
