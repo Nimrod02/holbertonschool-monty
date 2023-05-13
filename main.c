@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 
 	if (fileOpen == -1)
 	{
-		fprintf(stderr, "Error: Can't open file %s", argv[1]);
+		fprintf(stderr, "Error: can't open file %s", argv[1]);
 		exit(EXIT_FAILURE);
 	}
 
@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 
-	fileContent = read (fileOpen, buffer, 17000);
+	fileContent = read (fileOpen, buffer, 10000);
 
 	if (fileContent == -1)
 	{
@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
 	lineCounter = 1;
 	while (token != NULL)
 	{
-		if (isPush == true)
+		if (isPush == 1)
 		{
 			push(&h, lineCounter, token);
 			isPush = false;
