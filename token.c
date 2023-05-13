@@ -6,11 +6,11 @@
  * 
  * 
 */
-		void TOKEN(stack_t **h)
+		void push(stack_t **head, int lineCounter, char *token)
 {
-	int lineCounter;
+	stack_t *h = NULL;
 	bool isPush = false;
-	char *buffer, *token;
+	char *buffer;
 
 	while (token != NULL)
 	{

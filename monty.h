@@ -42,7 +42,6 @@ typedef struct instruction_s
 } instruction_t;
 
 void (*opcodeFunc(char *opCode))(stack_t **stack, unsigned int line_number);
-void push(stack_t **stack, unsigned int line_number,  char *token);
 void pall(stack_t **stack, unsigned int line_number);
 void pint(stack_t **stack, unsigned int line_number);
 void pop(stack_t **stack, unsigned int line_number);
@@ -51,6 +50,7 @@ void nop(stack_t **stack, unsigned int line_number);
 void add(stack_t **stack, unsigned int lineNumber);
 void swap(stack_t **stack, unsigned int lineNumber);
 void TOKEN(stack_t **h);
+void push(stack_t **head, int line, char *token)
 
 
 
